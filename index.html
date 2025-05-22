@@ -3,391 +3,624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ノーコードAIアプリ市場トレンド インフォグラフィック</title>
+    <title>着物・LED・SCREEN：ANREALAGEの世界観と市場トレンド</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Application Structure Plan:
+        - Layout Style: おしゃれなウェブマガジンスタイルを維持。
+        - Hero Section: ウェブマガジンのヒーローセクション（背景画像、記事タイトル、導入文）をそのまま使用。
+        - Main Content:
+            - 記事本文（批評文）をベースに、インフォグラフィックの各セクションを関連性の高い箇所に挿入。
+            - 批評文のセクション（哲学、光の魔術、素材の知恵、融合の美）は `.magazine-card` で表示。
+            - インフォグラフィックのセクション（市場概観、技術詳細、市場インパクト、エコシステム、未来展望）は、批評文の流れを補強する形で `.interactive-element-wrapper` や新しい `.magazine-card` を使用して統合。
+        - Navigation: ウェブマガジンのスティッキーナビゲーションを維持。主要な統合セクションへのリンクも追加検討。
+        - Footer: ウェブマガジンのフッターを維持。
+        - User Flow: スクロールによる線形的な読書体験。ナビゲーションで特定箇所へジャンプ可能。
+        - Justification: 批評文の深い洞察とインフォグラフィックの視覚的なデータ提示を組み合わせることで、ANREALAGE「SCREEN」コレクションの多角的な理解を促進する。ウェブマガジンスタイルにより、情報を魅力的かつ読みやすく提示する。
+    -->
     <!-- Visualization & Content Choices:
-    - Market Growth (Market Potential): Goal: Change, Viz: Bar Chart (Chart.js), Justification: Shows trend over time. NO SVG.
-    - Prompt Base Evolution (Key Player): Goal: Change/Organize, Viz: HTML/CSS Timeline, Justification: Visually represents progression. NO SVG.
-    - Platform Comparison (Competitive Landscape): Goal: Compare, Viz: Radar Chart (Chart.js), Justification: Compares multiple platforms across several features. NO SVG.
-    - Monetization Models (Ecosystem): Goal: Inform/Compare, Viz: Donut Chart (Chart.js), Justification: Shows parts of a whole. NO SVG.
-    - LLM API Models (LLM Integration): Goal: Organize, Viz: HTML/CSS Diagram, Justification: Explains a process/concept. NO SVG.
-    - Community Roles (Ecosystem): Goal: Inform, Viz: HTML/CSS Icon List, Justification: Presents key roles visually. NO SVG.
-    - Future Trends (Future Outlook): Goal: Inform, Viz: HTML/CSS Icon List, Justification: Highlights key future aspects. NO SVG.
-    All textual content is extracted and summarized from the provided research report (ID: 5863bec5-ec52-4927-af5b-d611ca42f871) to support the narrative.
+        - Combined Content: 批評文とインフォグラフィック情報を統合。
+            - Goal: 包括的な情報提供、批評的分析とデータに基づく洞察の融合。
+            - Viz/Presentation Method: 洗練されたタイポグラフィ、可読性の高いレイアウト、カード型セクション、引用、各種チャート（棒、ドーナツ、折れ線）、HTML/CSS図解、インタラクティブパターンデモ。
+            - Interaction: 読書、スクロール、ナビゲーション、パターンチェンジャー操作。
+            - Justification: 複数の情報源を一つの洗練されたウェブマガジン体験にまとめ、ユーザーエンゲージメントと理解度を最大化する。
+            - Library/Method: HTML, Tailwind CSS, Chart.js (Canvas), JavaScript.
+        - Specific Infographic Elements:
+            - Market Overview Charts (Donut, Line): 批評文の文脈で市場背景を補強。
+            - Tech Deep Dive (Stat, AZEK diagram, Flow): 批評文の技術解説を視覚的にサポート。
+            - Market Impact Charts (Bar, SWOT): コレクションの潜在的影響をデータと分析で示す。
+            - Ecosystem Cards: 協力体制を明確化。
+            - Future Outlook List: 課題と展望を整理。
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visuals are HTML/CSS/Tailwind or Chart.js canvas.
     -->
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F7F7F7; color: #1A1A1A; }
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
-        .section-title { color: #FF6B6B; }
-        .card { background-color: white; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); padding: 1.5rem; margin-bottom: 1.5rem; }
-        .kpi-value { color: #4ECDC4; font-weight: 700; }
-        .timeline-item::before { content: ''; position: absolute; left: -0.625rem; top: 0; width: 1.25rem; height: 1.25rem; border-radius: 9999px; background-color: #4ECDC4; border: 3px solid #F7F7F7; }
-        .nav-link { transition: color 0.3s ease; }
-        .nav-link:hover { color: #FF6B6B; }
-        .sticky-nav { position: -webkit-sticky; position: sticky; top: 0; z-index: 50; background-color: rgba(247, 247, 247, 0.9); backdrop-filter: blur(8px); }
+        body {
+            font-family: 'Roboto', 'Noto Serif JP', serif;
+            scroll-behavior: smooth;
+            background-color: #f8fafc; /* bg-slate-50 */
+            color: #115e59; /* text-teal-800 */
+        }
+        .font-serif-jp {
+            font-family: 'Noto Serif JP', serif;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(17, 94, 89, 0.7), rgba(17, 94, 89, 0.7)), url('https://images.unsplash.com/photo-1581337204873-579930591303?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+            background-size: cover;
+            color: white;
+        }
+        .article-title {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 700;
+            color: #f59e0b; /* amber-500 */
+        }
+        .sub-headline {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 700;
+            border-left: 4px solid #f59e0b; /* amber-500 */
+            padding-left: 1rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #0f766e; /* teal-700 */
+        }
+        .infographic-sub-headline { /* For infographic sections */
+            font-family: 'Noto Sans JP', sans-serif; /* Match infographic font */
+            font-weight: 700;
+            color: #0077B6; /* Primary color from infographic's original palette, adjusted to fit */
+            border-bottom: 2px solid #00B4D8;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .main-content p {
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .main-content strong {
+            color: #134e4a; /* teal-900 */
+        }
+        .magazine-card {
+            background-color: #ffffff;
+            border-radius: 0.25rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .interactive-element-wrapper, .infographic-section-card { /* Unified class for infographic content blocks */
+            border: 1px solid #e2e8f0; /* slate-200 */
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0.25rem;
+            background-color: #ffffff;
+        }
+        .chart-container { /* Base style for all chart containers */
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 350px;
+            padding: 1rem; /* Added padding for chart content */
+            border-radius: 0.25rem; /* Consistent rounding */
+        }
+         @media (min-width: 768px) { .chart-container { height: 320px; } }
+
+        .pattern-screen {
+            width: 180px; height: 270px;
+            background-color: #334155; /* slate-700 */
+            margin: 1rem auto; display: flex; justify-content: center; align-items: center; text-align: center;
+            color: white; font-size: 1.1rem; border-radius: 0.25rem; transition: background 0.5s ease, color 0.5s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .pattern-button {
+            background-color: #f59e0b; /* amber-500 */
+            color: #134e4a; /* teal-900 */
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s ease;
+        }
+        .pattern-button:hover {
+            background-color: #d97706; /* amber-600 */
+        }
+        .azek-diagram { display: flex; flex-direction: column; md:flex-row; align-items: center; justify-content: space-around; background-color: #f1f5f9; /* slate-100 */ padding: 20px; border-radius: 8px; margin-top: 1rem; border: 1px solid #e2e8f0; }
+        .azek-layer { text-align: center; padding: 10px; }
+        .azek-arrow { font-size: 1.8rem; color: #f59e0b; /* amber-500 */ margin: 0.5rem 8px; }
+
+        .nav-magazine {
+            background-color: rgba(17, 94, 89, 0.95); /* teal-800 with more opacity */
+            backdrop-filter: blur(8px); /* Stronger blur */
+        }
+        .nav-magazine a {
+            color: #f8fafc; /* slate-50 */
+            padding: 0.75rem 1.25rem; /* Increased padding */
+            transition: color 0.3s ease, background-color 0.3s ease;
+            border-radius: 0.25rem;
+            font-size: 0.9rem; /* Slightly smaller font for more items */
+        }
+        .nav-magazine a:hover, .nav-magazine a.active {
+            color: #f59e0b; /* amber-500 */
+            background-color: rgba(255,255,255,0.15); /* More visible hover */
+        }
+        .footer-magazine {
+            background-color: #134e4a; /* teal-900 */
+            color: #cbd5e1; /* slate-300 for better contrast */
+        }
+        blockquote {
+            border-left: 3px solid #f59e0b; /* amber-500 */
+            padding-left: 1.5rem;
+            margin: 1.5rem 0; /* Added vertical margin */
+            font-style: italic;
+            color: #0f766e; /* teal-700 */
+        }
+        /* Infographic specific styles, adapted to magazine theme */
+        .infographic-stat-number { font-size: 2.5rem; font-weight: 700; color: #f59e0b; /* amber-500 */ }
+        .infographic-flow-step { background-color: #f0ad4e; /* Softer gold/amber */ color: #134e4a; padding: 0.75rem 1.25rem; border-radius: 9999px; font-weight: bold; }
+        .infographic-flow-arrow { color: #f59e0b; font-size: 1.5rem; margin: 0 0.5rem; }
+        .infographic-swot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .infographic-swot-item { background-color: #fffbeb; /* very light amber/cream */ padding: 1rem; border-radius: 0.5rem; border: 1px solid #fde68a; /* light amber border */ }
+        .infographic-swot-item h4 { color: #b45309; /* darker amber */ font-weight: bold; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body class="antialiased">
 
-    <nav class="sticky-nav shadow-md py-3">
-        <div class="container mx-auto px-4">
-            <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6">
-                <li><a href="#introduction" class="nav-link text-sm md:text-base font-semibold text-gray-700">序論</a></li>
-                <li><a href="#market-overview" class="nav-link text-sm md:text-base font-semibold text-gray-700">市場概況</a></li>
-                <li><a href="#prompt-base" class="nav-link text-sm md:text-base font-semibold text-gray-700">Prompt Base</a></li>
-                <li><a href="#competition" class="nav-link text-sm md:text-base font-semibold text-gray-700">競争環境</a></li>
-                <li><a href="#technology" class="nav-link text-sm md:text-base font-semibold text-gray-700">技術連携</a></li>
-                <li><a href="#ecosystem" class="nav-link text-sm md:text-base font-semibold text-gray-700">エコシステム</a></li>
-                <li><a href="#future" class="nav-link text-sm md:text-base font-semibold text-gray-700">未来展望</a></li>
-            </ul>
-        </div>
-    </nav>
+    <header class="nav-magazine sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#article-top" class="text-lg font-serif-jp font-bold text-amber-400 hover:text-amber-300 transition-colors">ANREALAGE SCREEN</a>
+            <div class="space-x-2 text-xs md:text-sm">
+                <a href="#article-top">序論</a>
+                <a href="#philosophy">哲学</a>
+                <a href="#magic-of-light">光の魔術</a>
+                <a href="#infographic-market-overview">市場概観</a>
+                <a href="#tech-deep-dive">技術詳細</a>
+                <a href="#azek-wisdom">素材の知恵</a>
+                <a href="#infographic-market-impact">市場インパクト</a>
+                <a href="#fusion-beauty">融合の美</a>
+                <a href="#infographic-ecosystem">エコシステム</a>
+                <a href="#infographic-future-outlook">未来展望</a>
+            </div>
+        </nav>
+    </header>
 
-    <div class="container mx-auto p-4 md:p-8">
+    <article id="article-top">
+        <section class="hero-section py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl article-title mb-6 leading-tight">着物・LED・SCREEN</h1>
+                <p class="text-xl md:text-2xl font-serif-jp font-light max-w-3xl mx-auto">デザイナー森永邦彦コレクションにみる”日本の美”と市場の未来</p>
+            </div>
+        </section>
 
-        <header id="introduction" class="text-center py-8 md:py-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 section-title">ノーコードAIアプリ革命</h1>
-            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">プロンプトベースAIアプリ構築の最前線を探る。市場トレンド、主要プレイヤー、技術、そして未来への展望をインフォグラフィックで解説します。</p>
-        </header>
+        <section class="main-content container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16 max-w-4xl">
+            <p class="text-lg md:text-xl leading-relaxed font-serif-jp mb-10 text-center text-teal-700">
+                ANREALAGE（アンリアレイジ）の森永邦彦氏が発表した2025-26年秋冬コレクション「SCREEN」は、単に衣服とテクノロジーの融合という言葉では語り尽くせない、深遠な問いと未来への展望を内包した、まさに現代の「動く絵巻」と呼ぶべき作品群である。本稿では、「SCREEN」コレクションを、デザイナーの哲学、ショー演出における技術協力、素材の革新性といった側面から解体し、そこに通底する「日本的美意識」と、ハイテクと手仕事の融合という我が国が得意としてきた「匠の技」の現代的発露として論じる。さらに、この革新がファッションテック市場に与える影響と将来性についても考察する。
+            </p>
 
-        <section id="market-overview" class="py-8">
-            <h2 class="text-3xl font-bold text-center mb-8 section-title">市場の夜明け：パラダイムシフト</h2>
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">ノーコードAIとは？</h3>
-                    <p class="text-gray-600 mb-4">従来のプログラミングではなく、直感的なインターフェースと自然言語プロンプトを通じてAIアプリケーションを構築する手法。AI開発の民主化を推進します。</p>
-                    <h4 class="text-xl font-semibold mb-2 text-[#45B7D1]">市場成長の推進要因</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li>大規模言語モデル（LLM）の進歩</li>
-                        <li>カスタマイズAIソリューションへの需要増</li>
-                        <li>迅速なプロトタイピングと展開の必要性</li>
-                        <li>シチズンデベロッパー運動の広がり</li>
+            <div id="philosophy" class="magazine-card">
+                <h2 class="sub-headline text-3xl md:text-4xl mb-6">「第二の皮膚としての液晶スクリーン」<br><span class="text-xl text-teal-600">森永邦彦のファッション哲学</span></h2>
+                <p>森永邦彦氏のファッションに対するアプローチは、常に<strong>「REAL（日常）、UNREAL（非日常）、AGE（時代）」</strong>という三位一体の概念に貫かれている。「SCREEN」コレクションにおいて、この哲学は最も先鋭的な形で結実したと言えるだろう。衣服を単なる身体を覆う布としてではなく、「自己表現や情報伝達の媒体」と捉え、「第二の皮膚としての液晶スクリーン」という大胆なコンセプトを提示した。</p>
+                <blockquote>これは、かつて日本の着物が、その文様や色彩、素材を通じて着用者の身分や季節感、さらには物語性までも雄弁に語ってきたことと、奇しくも響き合う。</blockquote>
+                <p>森永氏が目指すのは、衣服が持つコミュニケーションの可能性を、現代のテクノロジーによって飛躍的に拡張することであり、それは表層的な奇抜さを超え、衣服の本質的な機能とは何かを問い直す試みでもある。</p>
+            </div>
+
+            <section id="infographic-intro" class="infographic-section-card my-12">
+                <h2 class="infographic-sub-headline text-2xl md:text-3xl mb-6 text-center">インタラクティブファッションの夜明け</h2>
+                <p class="text-md text-center text-gray-700 mb-8">ANREALAGEの「SCREEN」コレクションは、衣服が単なる「着る物」から、ダイナミックに変化する「表現媒体」へと進化する可能性を示しました。これは、ファッションテクノロジー市場における重要な転換点となるかもしれません。</p>
+                <div class="text-center bg-amber-50 p-8 rounded-lg border border-amber-200">
+                    <p class="infographic-stat-number">60+</p>
+                    <p class="text-lg text-amber-700 font-semibold">オンデマンド表示可能パターン</p>
+                </div>
+            </section>
+
+            <div class="interactive-element-wrapper my-12">
+                <h3 class="text-2xl font-serif-jp text-center text-teal-700 mb-4">主要データで見る「SCREEN」</h3>
+                <div class="grid md:grid-cols-3 gap-4 text-sm mb-6">
+                    <div class="bg-slate-100 p-4 rounded shadow text-center border border-slate-200">
+                        <p class="text-2xl font-bold text-amber-600" id="stats-patterns">最大60</p>
+                        <p class="text-teal-700">オンデマンド表示パターン</p>
+                    </div>
+                    <div class="bg-slate-100 p-4 rounded shadow text-center border border-slate-200">
+                        <p class="text-2xl font-bold text-amber-600" id="stats-leds">約10,000</p>
+                        <p class="text-teal-700">1ピースあたりのLED</p>
+                    </div>
+                    <div class="bg-slate-100 p-4 rounded shadow text-center border border-slate-200">
+                        <p class="text-2xl font-bold text-amber-600" id="stats-variations">30秒で60種</p>
+                        <p class="text-teal-700">デザインバリエーション</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="statsChart"></canvas>
+                </div>
+                <p class="text-xs text-teal-600 mt-2 text-center">「SCREEN」コレクションの主要数値（批評文より）</p>
+            </div>
+
+            <section id="infographic-market-overview" class="infographic-section-card my-12">
+                <h2 class="infographic-sub-headline text-2xl md:text-3xl mb-8 text-center">進化するファッション市場の動向</h2>
+                <p class="text-md text-gray-700 mb-6">現代の消費者は、単に美しいだけでなく、個人の価値観やライフスタイルを反映する、よりパーソナルでインタラクティブな製品を求めています。スマートテキスタイルやウェアラブル技術は、この需要に応える鍵となります。</p>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-4">ファッションイノベーションの推進力 (概念)</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="infographicInnovationDriversChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2 text-center">テクノロジー、サステナビリティ、パーソナライゼーション等が市場を牽引。</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-4">スマートテキスタイル市場成長予測 (概念)</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="infographicMarketGrowthChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2 text-center">今後数年で市場規模は飛躍的に拡大するとの予測も。</p>
+                    </div>
+                </div>
+            </section>
+
+            <div id="magic-of-light" class="magazine-card">
+                <h2 class="sub-headline text-3xl md:text-4xl mb-6">光の魔術師たち<br><span class="text-xl text-teal-600">MPLUSPLUSの貢献</span></h2>
+                <p>コレクションの発表において、その視覚的スペクタクルを決定づけたのは、クリエイティブ集団<strong>MPLUSPLUS</strong>（本コレクションでLEDシステム等を担当）による演出であろう。彼らは、LEDテキスタイルという「素材」に命を吹き込み、光ファイバーを用いたデバイス制作、そしてライティングパターンのデザインとプログラミングを通じて、衣服を文字通り「スクリーン」へと変貌させた。</p>
+                <p>毎秒生成される新しいモチーフ、30秒で60種類ものバリエーションを見せるチェック柄、万華鏡のように変化する花々。これらは、単なる技術デモンストレーションではなく、計算され尽くした光の詩学であり、観る者を幻想的な世界へと誘う。この精緻な光の制御は、日本の伝統芸能における舞台照明や、光と影を巧みに操る空間演出にも通じる、高度な技術と美的感覚の融合を示している。</p>
+            </div>
+
+             <section id="tech-deep-dive" class="infographic-section-card my-12">
+                <h2 class="infographic-sub-headline text-2xl md:text-3xl mb-8 text-center">"SCREEN" を支える革新技術詳細</h2>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                    <div class="lg:col-span-1 bg-amber-50 p-6 rounded-lg text-center border border-amber-200">
+                        <h3 class="text-xl font-semibold text-amber-700 mb-3">光を織り込んだ布</h3>
+                        <p class="infographic-stat-number">10,000+</p>
+                        <p class="text-md text-amber-700">1着あたりの超小型LED</p>
+                        <p class="text-gray-700 mt-2 text-sm">柔軟で着用可能なテキスタイルに直接LEDを組み込む技術。</p>
+                    </div>
+                    <div class="lg:col-span-2 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <h3 class="text-xl font-semibold text-teal-700 mb-4 text-center">魔法の織物：AZEK®</h3>
+                        <p class="text-gray-700 mb-4 text-center text-sm">シキボウ株式会社開発。日本の伝統建築「校倉造」に着想を得た3D織編物が、鮮明な表示を実現します。</p>
+                        <div class="azek-diagram">
+                            <div class="azek-layer">
+                                <p class="font-semibold text-sm">外部の光 ☀️</p>
+                                <div class="azek-arrow">⬇️</div>
+                                <p class="text-xs bg-gray-700 text-white px-2 py-1 rounded">AZEK®層 (遮光)</p>
+                            </div>
+                            <div class="azek-layer">
+                                <p class="text-xs bg-amber-500 text-slate-900 px-2 py-1 rounded">LED (RGB光)</p>
+                                <div class="azek-arrow">⬆️</div>
+                                <p class="font-semibold text-sm">表示面 ✨</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-3 text-center">AZEK®の光制御メカニズム (概念図)</p>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-inner border border-slate-200">
+                    <h3 class="text-xl font-semibold text-teal-700 mb-4 text-center">デザインによるダイナミズム</h3>
+                    <p class="text-gray-700 text-center mb-6 text-sm">衣服は完全にプログラム可能で、ワイヤレス制御によりパターンや色を瞬時に変化させることができます。</p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2 md:space-x-4">
+                        <div class="infographic-flow-step text-xs md:text-sm">アイデア・コンセプト</div>
+                        <div class="infographic-flow-arrow">➡️</div>
+                        <div class="infographic-flow-step text-xs md:text-sm">プログラミング</div>
+                        <div class="infographic-flow-arrow">➡️</div>
+                        <div class="infographic-flow-step text-xs md:text-sm">テキスタイルへ表示</div>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-3 text-center">インタラクティブなパターンの創出フロー (概念)</p>
+                </div>
+            </section>
+
+            <div class="interactive-element-wrapper my-12">
+                <h3 class="text-2xl font-serif-jp text-center text-teal-700 mb-4">インタラクティブ・パターン体験</h3>
+                 <p class="mb-4 text-sm text-center text-teal-600">ボタンをクリックして、表示される「パターン」の例を切り替えてみましょう。</p>
+                <div id="patternDisplay" class="pattern-screen">
+                    <span id="patternText" class="font-serif-jp">パターン1: チェック柄</span>
+                </div>
+                <div class="mt-4 space-x-2 text-center">
+                    <button onclick="changePattern(0)" class="pattern-button text-xs">柄1</button>
+                    <button onclick="changePattern(1)" class="pattern-button text-xs">柄2</button>
+                    <button onclick="changePattern(2)" class="pattern-button text-xs">柄3</button>
+                    <button onclick="changePattern(3)" class="pattern-button text-xs">柄4</button>
+                </div>
+            </div>
+
+            <div id="azek-wisdom" class="magazine-card">
+                <h2 class="sub-headline text-3xl md:text-4xl mb-6">校倉造とハイテク素材<br><span class="text-xl text-teal-600">AZEK®に宿る日本の知恵</span></h2>
+                <p>「SCREEN」コレクションの技術的な基盤を支える重要な要素の一つが、シキボウ株式会社開発の特殊素材<strong>AZEK®（エィゼック®）</strong>である。この「光透過性の3D織編物」は、日本の伝統的な建築様式である校倉造から着想を得ているという点が極めて興味深い。</p>
+                <p>校倉造が、木材の伸縮性を利用して湿度を調整し、内部の文化財を保護してきたように、AZEK®は前面からの光を遮断しつつ背面からのRGB光を効果的に透過させることで、LEDの鮮明な発色を可能にする。これは、自然素材の特性を最大限に活かしてきた日本の伝統的なものづくりの精神が、形を変えて現代のハイテク素材開発に応用された稀有な例と言えるだろう。まさに、温故知新の精神が息づくテクノロジーである。</p>
+            </div>
+
+            <section id="infographic-market-impact" class="infographic-section-card my-12">
+                <h2 class="infographic-sub-headline text-2xl md:text-3xl mb-8 text-center">市場へのインパクトと消費者との繋がり</h2>
+                <p class="text-md text-gray-700 mb-6">「SCREEN」のような技術は、ファッションの楽しみ方を根本から変える可能性を秘めています。パーソナライゼーションの深化、新たな広告媒体、アート表現としての衣服など、応用範囲は多岐にわたります。</p>
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-4">「SCREEN」技術の潜在的応用分野 (概念)</h3>
+                        <div class="chart-container" style="height:300px;">
+                            <canvas id="infographicApplicationsChart"></canvas>
+                        </div>
+                         <p class="text-xs text-gray-600 mt-2 text-center">オートクチュールからエンタメまで幅広い応用が期待される。</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-4">SWOT分析：インタラクティブファッション (概念)</h3>
+                        <div class="infographic-swot-grid">
+                            <div class="infographic-swot-item"><h4>強み (Strengths)</h4><ul class="list-disc list-inside text-xs text-gray-700 space-y-1"><li>高い革新性</li><li>究極のパーソナライズ</li><li>強い視覚的インパクト</li><li>新たな顧客体験</li></ul></div>
+                            <div class="infographic-swot-item"><h4>弱み (Weaknesses)</h4><ul class="list-disc list-inside text-xs text-gray-700 space-y-1"><li>高コスト</li><li>耐久性・洗濯の課題</li><li>技術の複雑さ</li><li>バッテリー持続時間</li></ul></div>
+                            <div class="infographic-swot-item"><h4>機会 (Opportunities)</h4><ul class="list-disc list-inside text-xs text-gray-700 space-y-1"><li>新市場の創出</li><li>異業種コラボ</li><li>データ活用（倫理的配慮要）</li><li>サステナブルな側面も</li></ul></div>
+                            <div class="infographic-swot-item"><h4>脅威 (Threats)</h4><ul class="list-disc list-inside text-xs text-gray-700 space-y-1"><li>模倣技術の出現</li><li>技術の陳腐化速度</li><li>プライバシー懸念</li><li>法規制の未整備</li></ul></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="fusion-beauty" class="magazine-card">
+                 <h2 class="sub-headline text-3xl md:text-4xl mb-6">ハイテクと手仕事の融合<br><span class="text-xl text-teal-600">新たな「日本の美」の創出</span></h2>
+                <p>「SCREEN」コレクションが提示する最も重要な論点の一つは、<strong>「イノベーションの二重性」</strong>、すなわち最先端技術と伝統的な職人技の融合である。ショーでは、1万枚以上の極小カラーファブリックを用いたパッチワークのステンドグラスルックと、そのLEDバージョンが並置された。これは、単なる技術の誇示ではなく、手仕事の温もりや複雑さと、デジタル技術による表現の可能性を対比させ、時に融合させることで、新たな美の価値を問いかける試みである。</p>
+                <p>日本人は古来より、精緻な手仕事による「匠の技」と、新しい技術を柔軟に取り込み昇華させる能力に長けてきた。漆芸や陶芸、染織といった伝統工芸の世界では、素材の特性を極限まで引き出し、気の遠くなるような手作業を経て、比類なき美が生み出されてきた。一方で、現代の日本は、ロボット技術や精密機械、素材科学といったハイテク分野でも世界をリードしている。</p>
+                <p>「SCREEN」コレクションは、この両極にあるとも思える領域を、ファッションというキャンバスの上で大胆に交差させる。LEDという極めて現代的な「光」を、AZEK®という日本の知恵から生まれた「布」に織り込み、さらに手仕事による伝統的な美意識と対峙させることで、森永氏は、テクノロジーが人間の創造性や感性とどのように共存し、新たな表現を生み出しうるかという、普遍的なテーマを探求している。</p>
+                <blockquote>それは、単に目新しいものを追い求めるのではなく、過去と現在、アナログとデジタル、手仕事と機械生産といった二項対立を超え、それらを弁証法的に統合しようとする、極めて日本的な美意識の発露と言えるのではないだろうか。</blockquote>
+                <p>「SCREEN」は、衣服が情報や感情をまとう「生きたメディア」となる未来を示唆すると同時に、その根底には、変化を受け入れながらも本質を見失わない、日本の伝統文化に脈々と受け継がれる精神性が流れている。このコレクションは、世界に向けて、新たな「日本の美」の可能性を鮮やかに提示したと言えるだろう。それは、静謐な侘び寂びの世界とは異なる、ダイナミックで革新的、そしてどこまでも人間的な温もりを感じさせる美なのである。</p>
+            </div>
+
+            <section id="infographic-ecosystem" class="infographic-section-card my-12">
+                <h2 class="infographic-sub-headline text-2xl md:text-3xl mb-8 text-center">イノベーションを支えるエコシステム</h2>
+                <p class="text-md text-gray-700 mb-6 text-center">「SCREEN」コレクションの実現は、ANREALAGEのデザイン力に加え、各分野の専門企業との緊密な連携があってこそ可能となりました。</p>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-amber-50 p-6 rounded-lg shadow border border-amber-200">
+                        <h3 class="text-lg font-semibold text-amber-700 mb-2">ANREALAGE</h3>
+                        <p class="text-sm text-gray-700">森永邦彦氏による独創的なコンセプトとデザイン。ファッションとテクノロジーの境界を常に探求。</p>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-lg shadow border border-amber-200">
+                        <h3 class="text-lg font-semibold text-amber-700 mb-2">MPLUSPLUS</h3>
+                        <p class="text-sm text-gray-700">LEDテキスタイル、システム設計、ワイヤレス制御、ビジュアル制作を担当。最先端技術で表現を拡張。</p>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-lg shadow border border-amber-200">
+                        <h3 class="text-lg font-semibold text-amber-700 mb-2">シキボウ株式会社</h3>
+                        <p class="text-sm text-gray-700">特殊素材AZEK®を開発。光透過性と遮光性を両立する3D織編物で、表示品質を向上。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="infographic-future-outlook" class="infographic-section-card my-12">
+                <h2 class="infographic-sub-headline text-2xl md:text-3xl mb-8 text-center">未来は着用可能で、織り込まれている</h2>
+                <p class="text-md text-gray-700 mb-6">インタラクティブファッションが日常となるには、いくつかの課題も存在します。しかし、技術の進化と社会の受容が進めば、衣服は自己表現、コミュニケーション、そして体験のための新たなプラットフォームとなるでしょう。</p>
+                <div class="bg-slate-50 p-6 rounded-lg shadow-inner border border-slate-200">
+                    <h3 class="text-xl font-semibold text-teal-700 mb-4">主流化への主な課題：</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <li>製造コストの低減と価格の適正化</li>
+                        <li>バッテリー技術の向上（持続時間、小型化、柔軟性）</li>
+                        <li>耐久性、耐水性、洗濯可能性の確保</li>
+                        <li>直感的で使いやすいユーザーインターフェースの開発</li>
+                        <li>倫理的側面（プライバシー、データセキュリティ）への配慮</li>
                     </ul>
                 </div>
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-center text-[#45B7D1]">市場の潜在性</h3>
-                    <p class="text-gray-600 mb-4 text-center">ノーコードAIアプリ市場は、専門知識なしにAIを活用したい企業や個人の需要の高まりを受け、急速な成長が見込まれています。</p>
-                    <div class="chart-container">
-                        <canvas id="marketGrowthChart"></canvas>
-                    </div>
-                    <p class="text-sm text-gray-500 mt-2 text-center">（注：市場規模の成長イメージ。具体的な数値はレポートに非掲載のため概念図）</p>
-                </div>
-            </div>
+                <p class="text-lg font-serif-jp text-teal-700 font-bold mt-8 text-center">"衣服は進化し続ける。最終形は存在しない。" <br><span class="text-sm text-teal-600">- 森永邦彦</span></p>
+            </section>
+
         </section>
+    </article>
 
-        <section id="prompt-base" class="py-8">
-            <h2 class="text-3xl font-bold text-center mb-8 section-title">注目プレイヤー：Prompt Baseの躍進</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">Prompt Baseの進化</h3>
-                    <div class="relative pl-8 py-4 border-l-2 border-[#4ECDC4]">
-                        <div class="timeline-item mb-6">
-                            <h4 class="font-semibold text-lg">プロンプトマーケットプレイス</h4>
-                            <p class="text-sm text-gray-600">DALL-E, Midjourney, GPT等向けAIプロンプト売買の場として確立。</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h4 class="font-semibold text-lg">AIアプリビルダー機能追加</h4>
-                            <p class="text-sm text-gray-600">静的プロンプト販売から、インタラクティブなAIアプリ作成・販売プラットフォームへ戦略的拡大。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">ビジネスモデルの核心</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-lg text-gray-700">手数料モデル</h4>
-                            <p class="text-gray-600">プロンプト販売に対し<span class="kpi-value">20%</span>の手数料。アプリ販売も同様の構造と推測。</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-lg text-gray-700">生成クレジット</h4>
-                            <p class="text-gray-600">アプリ実行に必要。獲得または購入可能。使用量ベースの収益源。</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-lg text-gray-700">プロンプト価格帯</h4>
-                            <p class="text-gray-600">多くが <span class="kpi-value">$1.99 - $9.99</span> 程度で販売。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="competition" class="py-8">
-            <h2 class="text-3xl font-bold text-center mb-8 section-title">競争環境：主要プラットフォーム比較</h2>
-            <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="card text-center">
-                    <h3 class="text-xl font-semibold mb-2 text-[#45B7D1]">Microsoft AI Builder</h3>
-                    <p class="text-sm text-gray-600">Power Platformと統合。ビジネス業務向けGPT活用。</p>
-                </div>
-                <div class="card text-center">
-                    <h3 class="text-xl font-semibold mb-2 text-[#45B7D1]">Replit AI (Agent)</h3>
-                    <p class="text-sm text-gray-600">自然言語からフルスタックアプリ生成を目指す。</p>
-                </div>
-                <div class="card text-center">
-                    <h3 class="text-xl font-semibold mb-2 text-[#45B7D1]">Bubble.io</h3>
-                    <p class="text-sm text-gray-600">強力なノーコードプラットフォームにAI機能を統合。</p>
-                </div>
-            </div>
-            <div class="card">
-                <h3 class="text-2xl font-semibold mb-3 text-center text-[#45B7D1]">プラットフォームの強み比較（概念図）</h3>
-                <div class="chart-container" style="max-width: 500px;">
-                    <canvas id="platformComparisonChart"></canvas>
-                </div>
-                <p class="text-sm text-gray-500 mt-2 text-center">（注：各プラットフォームの特徴を相対的に示したイメージです）</p>
-            </div>
-        </section>
-
-        <section id="technology" class="py-8">
-            <h2 class="text-3xl font-bold text-center mb-8 section-title">技術の核心：LLM連携</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">主要LLMサービス</h3>
-                    <p class="text-gray-600 mb-4">多くのプラットフォームは、OpenAI (GPTシリーズ), Cohere, Stability AI, Hugging Faceなどの主要LLMと連携して機能を提供しています。</p>
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <span class="bg-[#FFD166] text-gray-800 px-3 py-1 rounded-full text-sm font-semibold">OpenAI GPT</span>
-                        <span class="bg-[#4ECDC4] text-white px-3 py-1 rounded-full text-sm font-semibold">Cohere</span>
-                        <span class="bg-[#FF6B6B] text-white px-3 py-1 rounded-full text-sm font-semibold">Stability AI</span>
-                        <span class="bg-[#45B7D1] text-white px-3 py-1 rounded-full text-sm font-semibold">Hugging Face</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">API連携モデル</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <h4 class="font-semibold text-lg text-gray-700">ユーザー提供APIキー</h4>
-                            <p class="text-sm text-gray-600">ユーザーが自身のLLM APIキーを設定。コストはユーザーが直接負担。</p>
-                        </div>
-                        <div class="text-center text-gray-400 my-2">または</div>
-                        <div>
-                            <h4 class="font-semibold text-lg text-gray-700">バンドル型LLMアクセス</h4>
-                            <p class="text-sm text-gray-600">プラットフォームがLLMアクセスをサブスクリプションやクレジットに含めて提供。ユーザーは個別キー不要。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="ecosystem" class="py-8">
-            <h2 class="text-3xl font-bold text-center mb-8 section-title">エコシステム：マーケットプレイスとコミュニティ</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">収益化モデルの多様性</h3>
-                     <div class="chart-container" style="height: 280px; max-height:350px;">
-                        <canvas id="monetizationModelsChart"></canvas>
-                    </div>
-                    <p class="text-sm text-gray-500 mt-2 text-center">（注：一般的な収益化モデルの構成イメージ）</p>
-                </div>
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-3 text-[#45B7D1]">コミュニティの力</h3>
-                    <p class="text-gray-600 mb-4">ユーザーコミュニティは、サポート、知識共有、イノベーション促進、プラットフォーム採用の推進力として不可欠です。</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <span class="text-xl mr-3 text-[#FF6B6B]">🤝</span>
-                            <span class="text-gray-700">サポートとトラブルシューティング</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-xl mr-3 text-[#4ECDC4]">💡</span>
-                            <span class="text-gray-700">知識共有とベストプラクティス交換</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-xl mr-3 text-[#45B7D1]">🚀</span>
-                            <span class="text-gray-700">イノベーションとフィードバック提供</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-xl mr-3 text-[#FFD166]">🔗</span>
-                            <span class="text-gray-700">コラボレーションとネットワーキング</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="future" class="py-8">
-            <h2 class="text-3xl font-bold text-center mb-8 section-title">未来展望：次の波</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="card">
-                    <h3 class="text-xl font-semibold mb-2 text-[#45B7D1]">AIモデルの高度化</h3>
-                    <p class="text-sm text-gray-600">より複雑なアプリがコードなしで構築可能に。</p>
-                </div>
-                <div class="card">
-                    <h3 class="text-xl font-semibold mb-2 text-[#45B7D1]">マルチモーダルAIアプリ</h3>
-                    <p class="text-sm text-gray-600">テキスト、画像、動画、音声を統合。</p>
-                </div>
-                <div class="card">
-                    <h3 class="text-xl font-semibold mb-2 text-[#45B7D1]">AIエージェントの普及</h3>
-                    <p class="text-sm text-gray-600">自律型AIエージェント作成が容易に。</p>
-                </div>
-            </div>
-            <div class="mt-8 text-center">
-                 <p class="text-lg text-gray-700 max-w-2xl mx-auto">ノーコードAIアプリ開発は、技術の民主化と新たなクリエイターエコノミーを約束する成長分野です。LLMプロバイダー自身によるアプリ構築環境の提供や、倫理的課題への対応も今後の焦点となるでしょう。</p>
-            </div>
-        </section>
-
-        <footer class="text-center py-8 mt-8 border-t border-gray-300">
-            <p class="text-sm text-gray-600">&copy; 2024 ノーコードAI市場トレンド調査インフォグラフィック. <br>本内容は提供された調査レポートに基づき作成されました。</p>
-        </footer>
-
-    </div>
+    <footer class="footer-magazine text-center py-10">
+        <p class="text-sm">&copy; 2025 ANREALAGE "SCREEN" Collection Analysis & Market Perspective (Conceptual Web Magazine).</p>
+        <p class="text-xs mt-1">Content based on critical analysis and conceptual infographic data. For illustrative purposes only.</p>
+    </footer>
 
     <script>
-        const CHART_COLORS = {
-            red: '#FF6B6B',
-            teal: '#4ECDC4',
-            blue: '#45B7D1',
-            yellow: '#FFD166',
-            purple: '#975E9A',
-            lightGray: '#E0E0E0'
-        };
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-magazine a');
+            const sections = document.querySelectorAll('article section[id], article div[id].magazine-card, article div[id].infographic-section-card, article div[id].interactive-element-wrapper');
 
-        function wrapLabels(labels, maxWidth) {
-            return labels.map(label => {
-                if (typeof label === 'string' && label.length > maxWidth) {
-                    const words = label.split(' ');
-                    let currentLine = '';
-                    const newLabel = [];
-                    for (const word of words) {
-                        if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
-                            newLabel.push(currentLine.trim());
-                            currentLine = '';
+
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            const scrollHandler = debounce(() => {
+                let current = 'article-top'; 
+                let minDistance = Infinity;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const distance = Math.abs(pageYOffset - (sectionTop - 70)); // 70 is approx header height
+
+                    if (pageYOffset >= sectionTop - 75 && pageYOffset < sectionTop + section.offsetHeight - 75) {
+                         if (distance < minDistance) {
+                            minDistance = distance;
+                            current = section.getAttribute('id');
                         }
-                        currentLine += word + ' ';
                     }
-                    if (currentLine.length > 0) {
-                        newLabel.push(currentLine.trim());
-                    }
-                    return newLabel;
+                });
+                 // Fallback if no section is perfectly matched, especially for the very top or bottom
+                if (current === 'article-top' && pageYOffset > sections[0].offsetTop) {
+                     // Check first real section if scrolled past hero
+                     if (pageYOffset >= sections[1].offsetTop - 75) current = sections[1].getAttribute('id');
                 }
-                return label;
+
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            }, 100);
+
+            window.addEventListener('scroll', scrollHandler);
+            scrollHandler(); 
+
+
+            const ctxStats = document.getElementById('statsChart').getContext('2d');
+            new Chart(ctxStats, {
+                type: 'bar',
+                data: {
+                    labels: ['表示パターン (最大)', 'LED/ピース (約)', '30秒 バリエーション'],
+                    datasets: [{
+                        label: '「SCREEN」主要数値',
+                        data: [60, 10000, 60],
+                        backgroundColor: [
+                            'rgba(245, 158, 11, 0.7)', 
+                            'rgba(217, 119, 6, 0.7)',  
+                            'rgba(180, 83, 9, 0.7)'   
+                        ],
+                        borderColor: [
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(180, 83, 9, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y', 
+                    scales: {
+                        y: { ticks: { color: '#115e59', font: { family: "'Noto Serif JP', serif"}}, grid: { display: false } },
+                        x: { beginAtZero: true, type: 'logarithmic', ticks: { color: '#115e59' }, grid: { color: '#e2e8f0' } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#134e4a', titleColor: '#f8fafc', bodyColor: '#e2e8f0',
+                            titleFont: { family: "'Noto Serif JP', serif" }, bodyFont: { family: "'Roboto', sans-serif" },
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    return Array.isArray(label) ? label.join(' ') : label;
+                                }
+                            }
+                        }
+                    }
+                }
             });
-        }
-        
-        const commonTooltipOptions = {
-            callbacks: {
+
+            function wrapLabels(label, maxLength = 16) {
+                if (typeof label !== 'string' || label.length <= maxLength) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+                return lines.length > 0 ? lines : [label];
+            }
+
+            const defaultTooltipCallbacks = {
                 title: function(tooltipItems) {
                     const item = tooltipItems[0];
+                    if (!item) return '';
                     let label = item.chart.data.labels[item.dataIndex];
-                    if (Array.isArray(label)) {
-                      return label.join(' ');
-                    } else {
-                      return label;
-                    }
+                    return Array.isArray(label) ? label.join(' ') : label;
                 }
-            }
-        };
+            };
+            
+            const infographicChartColors = {
+                primary: 'rgba(245, 158, 11, 0.7)', // amber-500
+                secondary: 'rgba(217, 119, 6, 0.7)', // amber-600
+                tertiary: 'rgba(180, 83, 9, 0.7)', // amber-700
+                light: 'rgba(253, 230, 138, 0.7)', // amber-200
+                lighter: 'rgba(254, 243, 199, 0.7)', // amber-100
+                font: '#134e4a', // teal-900
+                grid: '#e2e8f0' // slate-200
+            };
 
-        const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
-        new Chart(marketGrowthCtx, {
-            type: 'bar',
-            data: {
-                labels: wrapLabels(['2022年', '2023年', '2024年 (推定)', '2025年 (予測)'], 16),
-                datasets: [{
-                    label: '市場規模指数',
-                    data: [100, 180, 300, 500],
-                    backgroundColor: CHART_COLORS.teal,
-                    borderColor: CHART_COLORS.teal,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, ticks: { color: '#1A1A1A' } },
-                    x: { ticks: { color: '#1A1A1A' } }
+            const innovationDriversCtx = document.getElementById('infographicInnovationDriversChart').getContext('2d');
+            new Chart(innovationDriversCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['テクノロジー統合', 'サステナビリティ', 'パーソナライゼーション', '体験価値向上', 'その他'].map(l => wrapLabels(l)),
+                    datasets: [{
+                        label: 'ファッションイノベーションの推進力',
+                        data: [40, 25, 20, 10, 5],
+                        backgroundColor: [infographicChartColors.primary, infographicChartColors.secondary, infographicChartColors.tertiary, infographicChartColors.light, infographicChartColors.lighter],
+                        borderColor: '#ffffff', borderWidth: 2
+                    }]
                 },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: commonTooltipOptions
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: infographicChartColors.font, font: { size: 10 } } },
+                        tooltip: { callbacks: defaultTooltipCallbacks, backgroundColor: infographicChartColors.font, titleColor: '#f8fafc', bodyColor: '#e2e8f0' }
+                    }
                 }
-            }
-        });
+            });
 
-        const platformComparisonCtx = document.getElementById('platformComparisonChart').getContext('2d');
-        new Chart(platformComparisonCtx, {
-            type: 'radar',
-            data: {
-                labels: wrapLabels(['使いやすさ', '機能の豊富さ', 'コミュニティサポート', '価格競争力', '拡張性と柔軟性'], 16),
-                datasets: [
-                    {
-                        label: 'Prompt Base (イメージ)',
-                        data: [4, 3, 4, 4, 3],
-                        backgroundColor: 'rgba(255, 107, 107, 0.2)',
-                        borderColor: CHART_COLORS.red,
-                        pointBackgroundColor: CHART_COLORS.red,
-                    },
-                    {
-                        label: 'Bubble.io (イメージ)',
-                        data: [3, 5, 5, 3, 5],
-                        backgroundColor: 'rgba(78, 205, 196, 0.2)',
-                        borderColor: CHART_COLORS.teal,
-                        pointBackgroundColor: CHART_COLORS.teal,
-                    },
-                     {
-                        label: 'Replit AI (イメージ)',
-                        data: [4, 4, 3, 4, 4],
-                        backgroundColor: 'rgba(69, 183, 209, 0.2)',
-                        borderColor: CHART_COLORS.blue,
-                        pointBackgroundColor: CHART_COLORS.blue,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: { color: CHART_COLORS.lightGray },
-                        grid: { color: CHART_COLORS.lightGray },
-                        pointLabels: { font: { size: 10 }, color: '#1A1A1A' },
-                        ticks: { backdropColor: 'transparent', color: '#1A1A1A' }
-                    }
+            const marketGrowthCtx = document.getElementById('infographicMarketGrowthChart').getContext('2d');
+            new Chart(marketGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2022', '2023', '2024', '2025 (予測)', '2026 (予測)', '2027 (予測)'].map(l => wrapLabels(l)),
+                    datasets: [{
+                        label: 'スマートテキスタイル市場規模 (概念)',
+                        data: [10, 15, 22, 35, 50, 75],
+                        borderColor: infographicChartColors.primary,
+                        backgroundColor: infographicChartColors.light,
+                        fill: true, tension: 0.4
+                    }]
                 },
-                plugins: {
-                    legend: { position: 'top', labels: { color: '#1A1A1A' } },
-                    tooltip: commonTooltipOptions
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: { color: infographicChartColors.font } }, x: { ticks: { color: infographicChartColors.font, font: {size: 10} } } },
+                    plugins: {
+                        legend: { display: true, labels: { color: infographicChartColors.font } },
+                        tooltip: { callbacks: defaultTooltipCallbacks, backgroundColor: infographicChartColors.font, titleColor: '#f8fafc', bodyColor: '#e2e8f0' }
+                    }
                 }
-            }
-        });
-        
-        const monetizationModelsCtx = document.getElementById('monetizationModelsChart').getContext('2d');
-        new Chart(monetizationModelsCtx, {
-            type: 'doughnut',
-            data: {
-                labels: wrapLabels(['コミッションベース', 'サブスクリプション', 'クレジット販売', 'テンプレート/アプリ販売'], 16),
-                datasets: [{
-                    label: '収益化モデル',
-                    data: [35, 30, 20, 15],
-                    backgroundColor: [CHART_COLORS.red, CHART_COLORS.teal, CHART_COLORS.blue, CHART_COLORS.yellow],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { color: '#1A1A1A' } },
-                    tooltip: commonTooltipOptions
-                }
-            }
-        });
+            });
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop - 80; // Adjust for sticky nav height
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+            const applicationsCtx = document.getElementById('infographicApplicationsChart').getContext('2d');
+            new Chart(applicationsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['オートクチュール', 'パフォーマンスウェア', 'インタラクティブアート', '広告・マーケティング', '医療・ヘルスケア'].map(l => wrapLabels(l)),
+                    datasets: [{
+                        label: '潜在的応用分野の魅力度 (概念)',
+                        data: [85, 70, 90, 75, 60],
+                        backgroundColor: [infographicChartColors.primary, infographicChartColors.secondary, infographicChartColors.tertiary, infographicChartColors.light, infographicChartColors.lighter],
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                    scales: { y: { ticks: { color: infographicChartColors.font, font: {size: 10} } }, x: { beginAtZero: true, ticks: { color: infographicChartColors.font } } },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: defaultTooltipCallbacks, backgroundColor: infographicChartColors.font, titleColor: '#f8fafc', bodyColor: '#e2e8f0' }
+                    }
                 }
             });
         });
 
+        const patterns = [
+            { text: "市松模様", bg: "repeating-conic-gradient(#f59e0b 0% 25%, #134e4a 0% 50%)", color: "white" },
+            { text: "縦縞模様", bg: "repeating-linear-gradient(0deg, #0f766e, #0f766e 15px, #ccfbf1 15px, #ccfbf1 30px)", color: "#134e4a" },
+            { text: "水玉模様", bg: "radial-gradient(circle, #d97706 12%, transparent 13%), radial-gradient(circle, #d97706 12%, #f1f5f9 13%) 20px 20px", backgroundSize: "40px 40px", color: "#134e4a"},
+            { text: "光の粒子", bg: "linear-gradient(transparent 60%, rgba(0,0,0,0.05) 60%), radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%,rgba(0,0,0,0.1) 100%)", color: "#a1a1aa" }
+        ];
+        let currentPatternIndex = 0;
+        const patternDisplay = document.getElementById('patternDisplay');
+        const patternText = document.getElementById('patternText');
+
+        function changePattern(index) {
+            currentPatternIndex = index;
+            const pattern = patterns[currentPatternIndex];
+            if (patternDisplay && patternText) { // Ensure elements exist
+                patternDisplay.style.background = pattern.bg || '#334155';
+                patternDisplay.style.backgroundSize = pattern.backgroundSize || 'auto';
+                patternText.textContent = pattern.text;
+                patternText.style.color = pattern.color || 'white';
+            }
+        }
+        if (patternDisplay) { // Initialize only if patternDisplay exists
+             changePattern(0);
+        }
     </script>
 </body>
 </html>
